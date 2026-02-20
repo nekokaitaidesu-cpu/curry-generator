@@ -1,26 +1,731 @@
 @import "tailwindcss";
 
+/* ============================================================
+   CSS カスタムプロパティ（ライトモード）
+   ============================================================ */
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --bg-primary: #FFF8F0;
+  --bg-secondary: #FFFFFF;
+  --bg-card: #FFFFFF;
+  --bg-tab: #F5EDE0;
+  --text-primary: #2D1B00;
+  --text-secondary: #6B4C2A;
+  --text-muted: #A08060;
+  --accent-orange: #FF8C00;
+  --accent-yellow: #FFB300;
+  --accent-green: #4CAF50;
+  --accent-red: #F44336;
+  --border-color: #E8D5B7;
+  --shadow-sm: 0 2px 8px rgba(180, 100, 0, 0.1);
+  --shadow-md: 0 4px 20px rgba(180, 100, 0, 0.15);
+  --shadow-lg: 0 8px 40px rgba(180, 100, 0, 0.2);
+  --rice-color: #F5F0E0;
+  --curry-color: #C8860A;
+  --radius-sm: 8px;
+  --radius-md: 16px;
+  --radius-lg: 24px;
+  --radius-xl: 32px;
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
-
+/* ============================================================
+   ダークモード
+   ============================================================ */
 @media (prefers-color-scheme: dark) {
   :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+    --bg-primary: #1A0F00;
+    --bg-secondary: #2A1800;
+    --bg-card: #2A1800;
+    --bg-tab: #3A2200;
+    --text-primary: #FFF0D0;
+    --text-secondary: #D4A870;
+    --text-muted: #8B6840;
+    --accent-orange: #FFA040;
+    --accent-yellow: #FFC040;
+    --border-color: #4A3010;
+    --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.4);
+    --shadow-md: 0 4px 20px rgba(0, 0, 0, 0.5);
+    --shadow-lg: 0 8px 40px rgba(0, 0, 0, 0.6);
   }
 }
 
+/* ============================================================
+   ベーススタイル
+   ============================================================ */
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  background: var(--bg-primary);
+  color: var(--text-primary);
+  font-family: var(--font-noto-sans-jp), "Noto Sans JP", "Hiragino Kaku Gothic ProN",
+    "Yu Gothic", sans-serif;
+  min-height: 100vh;
+  background-image:
+    radial-gradient(ellipse at top, rgba(255, 180, 50, 0.08) 0%, transparent 60%),
+    radial-gradient(ellipse at bottom, rgba(255, 100, 0, 0.05) 0%, transparent 60%);
+}
+
+/* ============================================================
+   アプリ全体レイアウト
+   ============================================================ */
+.app-container {
+  max-width: 600px;
+  margin: 0 auto;
+  padding: 0 16px 40px;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+/* ============================================================
+   ヘッダー
+   ============================================================ */
+.app-header {
+  text-align: center;
+  padding: 32px 16px 24px;
+}
+
+.header-emoji {
+  font-size: 56px;
+  line-height: 1;
+  margin-bottom: 12px;
+  filter: drop-shadow(0 4px 8px rgba(200, 130, 10, 0.4));
+  animation: float 3s ease-in-out infinite;
+}
+
+@keyframes float {
+  0%, 100% { transform: translateY(0px); }
+  50% { transform: translateY(-8px); }
+}
+
+.app-title {
+  font-size: clamp(24px, 6vw, 36px);
+  font-weight: 900;
+  color: var(--text-primary);
+  letter-spacing: -0.5px;
+  background: linear-gradient(135deg, #FF8C00, #FF4500);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  margin-bottom: 8px;
+}
+
+.app-subtitle {
+  font-size: 14px;
+  color: var(--text-secondary);
+  font-weight: 500;
+}
+
+/* ============================================================
+   メインコンテンツ
+   ============================================================ */
+.main-content {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+/* ============================================================
+   イラスト
+   ============================================================ */
+.illustration-wrapper {
+  background: var(--bg-card);
+  border-radius: var(--radius-xl);
+  padding: 16px;
+  box-shadow: var(--shadow-md);
+  border: 1px solid var(--border-color);
+}
+
+/* ============================================================
+   比率バー
+   ============================================================ */
+.ratio-display {
+  background: var(--bg-card);
+  border-radius: var(--radius-md);
+  padding: 16px 20px;
+  box-shadow: var(--shadow-sm);
+  border: 1px solid var(--border-color);
+}
+
+.ratio-bar-wrapper {
+  display: flex;
+  height: 20px;
+  border-radius: 10px;
+  overflow: hidden;
+  margin-bottom: 12px;
+  background: var(--border-color);
+}
+
+.ratio-bar-rice {
+  background: linear-gradient(90deg, #F5F0E0, #E8DCC8);
+  border-right: 2px solid rgba(180, 130, 60, 0.4);
+  transition: width 0.6s ease;
+  min-width: 0;
+}
+
+.ratio-bar-curry {
+  background: linear-gradient(90deg, #E09A20, #C8860A);
+  transition: width 0.6s ease;
+  min-width: 0;
+}
+
+.ratio-labels {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  font-size: 16px;
+}
+
+.ratio-rice {
+  color: #8B6840;
+}
+
+.ratio-curry {
+  color: var(--accent-orange);
+}
+
+.ratio-separator {
+  color: var(--text-muted);
+  font-size: 20px;
+  font-weight: 300;
+}
+
+.ratio-labels strong {
+  font-size: 22px;
+  font-weight: 900;
+}
+
+/* ============================================================
+   カレーボタン
+   ============================================================ */
+.cook-button-wrapper {
+  display: flex;
+  justify-content: center;
+}
+
+.cook-button {
+  background: linear-gradient(135deg, #FF8C00, #FF4500);
+  color: white;
+  border: none;
+  border-radius: 50px;
+  padding: 18px 48px;
+  font-size: 20px;
+  font-weight: 900;
+  font-family: inherit;
+  cursor: pointer;
+  box-shadow: 0 6px 24px rgba(255, 100, 0, 0.4);
+  transition: all 0.2s ease;
+  letter-spacing: 0.5px;
+  position: relative;
+  overflow: hidden;
+}
+
+.cook-button::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(135deg, rgba(255,255,255,0.2), transparent);
+  border-radius: 50px;
+}
+
+.cook-button:hover:not(:disabled) {
+  box-shadow: 0 8px 32px rgba(255, 100, 0, 0.5);
+}
+
+.cook-button:disabled {
+  opacity: 0.8;
+  cursor: not-allowed;
+}
+
+.cook-button.cooking {
+  background: linear-gradient(135deg, #FF6B00, #CC3300);
+}
+
+.button-emoji {
+  margin-right: 6px;
+}
+
+.cooking-text {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.cooking-emoji {
+  display: inline-block;
+  animation: spin 0.6s linear infinite;
+}
+
+@keyframes spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+/* ============================================================
+   コメントボックス
+   ============================================================ */
+.comment-box {
+  background: linear-gradient(135deg, #FFF3E0, #FFE0B2);
+  border: 2px solid #FFB300;
+  border-radius: var(--radius-md);
+  padding: 16px 20px;
+  box-shadow: var(--shadow-sm);
+}
+
+@media (prefers-color-scheme: dark) {
+  .comment-box {
+    background: linear-gradient(135deg, #3A2000, #2A1500);
+    border-color: #CC8800;
+  }
+}
+
+.comment-text {
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--text-primary);
+  line-height: 1.6;
+  text-align: center;
+}
+
+/* ============================================================
+   タブ
+   ============================================================ */
+.tab-container {
+  background: var(--bg-card);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-md);
+  border: 1px solid var(--border-color);
+  overflow: hidden;
+}
+
+.tab-bar {
+  display: flex;
+  border-bottom: 1px solid var(--border-color);
+  background: var(--bg-tab);
+}
+
+.tab-button {
+  flex: 1;
+  padding: 14px 8px;
+  border: none;
+  background: transparent;
+  font-family: inherit;
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--text-muted);
+  cursor: pointer;
+  transition: all 0.2s ease;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+}
+
+.tab-button.active {
+  color: var(--accent-orange);
+  background: var(--bg-card);
+}
+
+.tab-button.active::after {
+  content: "";
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 3px;
+  background: linear-gradient(90deg, #FF8C00, #FF4500);
+  border-radius: 3px 3px 0 0;
+}
+
+.tab-badge {
+  background: var(--accent-orange);
+  color: white;
+  border-radius: 10px;
+  padding: 1px 6px;
+  font-size: 11px;
+  font-weight: 700;
+}
+
+/* ============================================================
+   結果パネル
+   ============================================================ */
+.result-panel {
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.section-title {
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--text-primary);
+  margin-bottom: 12px;
+}
+
+.ingredient-result-list {
+  background: var(--bg-secondary);
+  border-radius: var(--radius-md);
+  padding: 16px;
+  border: 1px solid var(--border-color);
+}
+
+.ingredient-result-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.ingredient-result-chip {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  background: var(--bg-tab);
+  border: 1px solid var(--border-color);
+  border-radius: 20px;
+  padding: 5px 12px;
+  font-size: 13px;
+}
+
+.ingredient-result-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  flex-shrink: 0;
+  box-shadow: 0 0 4px rgba(0,0,0,0.2);
+}
+
+.ingredient-result-name {
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+.ingredient-result-amount {
+  color: var(--accent-orange);
+  font-weight: 700;
+  font-size: 12px;
+}
+
+/* 空状態 */
+.empty-result {
+  padding: 40px 20px;
+  text-align: center;
+}
+
+.empty-main {
+  font-size: 20px;
+  font-weight: 700;
+  color: var(--text-secondary);
+  margin-bottom: 8px;
+}
+
+.empty-sub {
+  font-size: 13px;
+  color: var(--text-muted);
+}
+
+/* ============================================================
+   栄養情報パネル
+   ============================================================ */
+.nutrition-panel {
+  background: var(--bg-secondary);
+  border-radius: var(--radius-md);
+  padding: 20px;
+  border: 1px solid var(--border-color);
+}
+
+.nutrition-title {
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--text-primary);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 16px;
+}
+
+.nutrition-icon {
+  font-size: 18px;
+}
+
+.calorie-display {
+  text-align: center;
+  margin-bottom: 20px;
+  padding: 16px;
+  background: linear-gradient(135deg, #FFF3E0, #FFE0B2);
+  border-radius: var(--radius-md);
+}
+
+@media (prefers-color-scheme: dark) {
+  .calorie-display {
+    background: linear-gradient(135deg, #3A2000, #2A1500);
+  }
+}
+
+.calorie-value {
+  font-size: 48px;
+  font-weight: 900;
+  color: #FF6B00;
+  line-height: 1;
+}
+
+.calorie-unit {
+  font-size: 18px;
+  color: var(--text-secondary);
+  font-weight: 600;
+  margin-left: 4px;
+}
+
+.nutrition-rows {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.nutrition-row {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.nutrition-row-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.nutrition-label {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text-secondary);
+}
+
+.nutrition-value {
+  font-size: 15px;
+  font-weight: 700;
+  color: var(--text-primary);
+}
+
+.nutrition-unit {
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--text-muted);
+  margin-left: 2px;
+}
+
+.nutrition-bar-bg {
+  height: 8px;
+  background: var(--border-color);
+  border-radius: 4px;
+  overflow: hidden;
+}
+
+.nutrition-bar {
+  height: 100%;
+  border-radius: 4px;
+  transition: width 0.6s ease;
+}
+
+.nutrition-note {
+  margin-top: 12px;
+  font-size: 11px;
+  color: var(--text-muted);
+  text-align: right;
+}
+
+/* ============================================================
+   食材選択パネル
+   ============================================================ */
+.ingredient-panel {
+  padding: 20px;
+}
+
+.ingredient-panel-title {
+  font-size: 18px;
+  font-weight: 700;
+  color: var(--text-primary);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 6px;
+}
+
+.ingredient-panel-desc {
+  font-size: 13px;
+  color: var(--text-muted);
+  margin-bottom: 20px;
+  line-height: 1.5;
+}
+
+.ingredient-category {
+  margin-bottom: 24px;
+}
+
+.ingredient-category:last-child {
+  margin-bottom: 0;
+}
+
+.ingredient-category-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 10px;
+}
+
+.ingredient-category-title {
+  font-size: 15px;
+  font-weight: 700;
+  color: var(--text-primary);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.ingredient-count {
+  font-size: 12px;
+  color: var(--text-muted);
+  font-weight: 500;
+}
+
+.ingredient-category-actions {
+  display: flex;
+  gap: 6px;
+}
+
+.btn-all,
+.btn-none {
+  padding: 3px 10px;
+  border-radius: 12px;
+  font-size: 11px;
+  font-weight: 700;
+  font-family: inherit;
+  cursor: pointer;
+  transition: all 0.15s ease;
+  border: 1.5px solid;
+}
+
+.btn-all {
+  background: var(--accent-orange);
+  color: white;
+  border-color: var(--accent-orange);
+}
+
+.btn-all:hover {
+  opacity: 0.85;
+}
+
+.btn-none {
+  background: transparent;
+  color: var(--text-muted);
+  border-color: var(--border-color);
+}
+
+.btn-none:hover {
+  background: var(--border-color);
+}
+
+.ingredient-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 7px;
+}
+
+.ingredient-chip {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  padding: 6px 12px;
+  border-radius: 20px;
+  font-size: 13px;
+  font-weight: 600;
+  font-family: inherit;
+  cursor: pointer;
+  transition: all 0.15s ease;
+  border: 1.5px solid var(--border-color);
+  background: var(--bg-secondary);
+  color: var(--text-secondary);
+}
+
+.ingredient-chip.enabled {
+  background: linear-gradient(135deg, #FFF3E0, #FFE8C8);
+  border-color: var(--accent-orange);
+  color: var(--text-primary);
+  box-shadow: 0 2px 8px rgba(255, 140, 0, 0.2);
+}
+
+@media (prefers-color-scheme: dark) {
+  .ingredient-chip.enabled {
+    background: linear-gradient(135deg, #3A2000, #2A1500);
+    border-color: var(--accent-orange);
+  }
+}
+
+.ingredient-chip:hover {
+  transform: translateY(-1px);
+  box-shadow: var(--shadow-sm);
+}
+
+.ingredient-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  flex-shrink: 0;
+  box-shadow: 0 0 4px rgba(0,0,0,0.2);
+}
+
+.ingredient-name {
+  line-height: 1;
+}
+
+.ingredient-toggle {
+  font-size: 10px;
+  font-weight: 700;
+  padding: 1px 5px;
+  border-radius: 8px;
+}
+
+.ingredient-toggle.on {
+  background: var(--accent-orange);
+  color: white;
+}
+
+.ingredient-toggle.off {
+  background: var(--border-color);
+  color: var(--text-muted);
+}
+
+/* ============================================================
+   フッター
+   ============================================================ */
+.app-footer {
+  text-align: center;
+  padding: 24px 16px 16px;
+  font-size: 12px;
+  color: var(--text-muted);
+}
+
+/* ============================================================
+   スクロールバー
+   ============================================================ */
+::-webkit-scrollbar {
+  width: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--bg-primary);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--border-color);
+  border-radius: 3px;
 }
