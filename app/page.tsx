@@ -269,6 +269,39 @@ export default function Home() {
 
                     {/* 栄養情報 */}
                     <NutritionPanel nutrition={result.nutrition} />
+
+                    {/* 合計グラム数 */}
+                    <div className="total-grams-panel">
+                      <h3 className="section-title">⚖️ 合計グラム数</h3>
+                      <div className="total-grams-rows">
+                        <div className="total-grams-row">
+                          <span className="total-grams-label">🍚 ご飯</span>
+                          <span className="total-grams-value">{result.riceGrams}g</span>
+                        </div>
+                        <div className="total-grams-row">
+                          <span className="total-grams-label">🍛 カレールー</span>
+                          <span className="total-grams-value">{result.rouGrams}g</span>
+                        </div>
+                        {result.ingredients.map(({ ingredient, amount }) => (
+                          <div key={ingredient.id} className="total-grams-row">
+                            <span className="total-grams-label">
+                              <span
+                                className="ingredient-result-dot"
+                                style={{ backgroundColor: ingredient.color }}
+                              />
+                              {ingredient.name}
+                            </span>
+                            <span className="total-grams-value">
+                              {amount}{ingredient.unit}
+                            </span>
+                          </div>
+                        ))}
+                        <div className="total-grams-row total-grams-sum">
+                          <span className="total-grams-label">合計</span>
+                          <span className="total-grams-value">{result.totalGrams}g</span>
+                        </div>
+                      </div>
+                    </div>
                   </div>
                 ) : (
                   <div className="empty-result">

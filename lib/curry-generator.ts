@@ -15,6 +15,10 @@ export interface CurryResult {
   riceGrams: number;
   /** カレールーのグラム数 */
   rouGrams: number;
+  /** 食材の合計グラム数 */
+  ingredientTotalGrams: number;
+  /** 全体の合計グラム数 */
+  totalGrams: number;
   /** 有効化された食材とその量 */
   ingredients: IngredientResult[];
   /** 反応コメント */
@@ -143,9 +147,16 @@ export function generateCurry(enabledIngredientIds: Set<string>): CurryResult {
     }
   }
 
-  // ご飯・カレールーのグラム数
+  // ご飯・カレールーのグラム数（合計300g固定）
   const riceGrams = Math.round((ricePercent / 100) * 300);
-  const rouGrams = Math.round((curryPercent / 100) * 200);
+  const rouGrams = 300 - riceGrams;
+
+  // 食材の合計グラム数
+  const ingredientTotalGrams = ingredientResults.reduce(
+    (sum, { ingredient, amount }) => sum + amount * UNIT_WEIGHT[ingredient.unit],
+    0
+  );
+  const totalGrams = riceGrams + rouGrams + ingredientTotalGrams;
 
   // 栄養計算
   const nutrition = calculateNutrition(
@@ -159,6 +170,8 @@ export function generateCurry(enabledIngredientIds: Set<string>): CurryResult {
     curryPercent,
     riceGrams,
     rouGrams,
+    ingredientTotalGrams,
+    totalGrams,
     ingredients: ingredientResults,
     comment,
     nutrition,
@@ -175,8 +188,8 @@ function calculateNutrition(
 ): NutritionInfo {
   // ご飯の基本量（300gを基準にricePercentでスケール）
   const riceGrams = (ricePercent / 100) * 300;
-  // カレールーの基本量（200gを基準にcurryPercentでスケール）
-  const rouGrams = (curryPercent / 100) * 200;
+  // カレールーの基本量（300gを基準にcurryPercentでスケール、ご飯と合わせて300g固定）
+  const rouGrams = 300 - riceGrams;
 
   // ご飯の栄養（per 100g: 168kcal, 2.5g protein, 0.3g fat, 37g carbs, 1mg sodium, 0.3g fiber）
   const riceNutrition: NutritionInfo = {
