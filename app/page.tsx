@@ -148,10 +148,12 @@ export default function Home() {
               <div className="ratio-labels">
                 <span className="ratio-rice">
                   🍚 ご飯 <strong>{result.ricePercent}%</strong>
+                  <span className="ratio-grams">（{result.riceGrams}g）</span>
                 </span>
                 <span className="ratio-separator">:</span>
                 <span className="ratio-curry">
                   🍛 カレー <strong>{result.curryPercent}%</strong>
+                  <span className="ratio-grams">（{result.rouGrams}g）</span>
                 </span>
               </div>
             </motion.div>

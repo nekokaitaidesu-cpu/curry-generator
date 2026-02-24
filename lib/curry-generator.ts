@@ -11,6 +11,10 @@ export interface CurryResult {
   ricePercent: number;
   /** カレーの割合 (0-100) */
   curryPercent: number;
+  /** ご飯のグラム数 */
+  riceGrams: number;
+  /** カレールーのグラム数 */
+  rouGrams: number;
   /** 有効化された食材とその量 */
   ingredients: IngredientResult[];
   /** 反応コメント */
@@ -139,6 +143,10 @@ export function generateCurry(enabledIngredientIds: Set<string>): CurryResult {
     }
   }
 
+  // ご飯・カレールーのグラム数
+  const riceGrams = Math.round((ricePercent / 100) * 300);
+  const rouGrams = Math.round((curryPercent / 100) * 200);
+
   // 栄養計算
   const nutrition = calculateNutrition(
     ricePercent,
@@ -149,6 +157,8 @@ export function generateCurry(enabledIngredientIds: Set<string>): CurryResult {
   return {
     ricePercent,
     curryPercent,
+    riceGrams,
+    rouGrams,
     ingredients: ingredientResults,
     comment,
     nutrition,
