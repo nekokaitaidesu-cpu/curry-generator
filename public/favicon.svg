@@ -1,0 +1,32 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64">
+  <!-- 背景（丸形） -->
+  <circle cx="32" cy="32" r="32" fill="#F59E0B"/>
+
+  <!-- 蒸気 -->
+  <path d="M22 14 Q20 10 22 6 Q24 10 22 14" stroke="#FDE68A" stroke-width="1.5" fill="none" stroke-linecap="round"/>
+  <path d="M32 12 Q30 8 32 4 Q34 8 32 12" stroke="#FDE68A" stroke-width="1.5" fill="none" stroke-linecap="round"/>
+  <path d="M42 14 Q40 10 42 6 Q44 10 42 14" stroke="#FDE68A" stroke-width="1.5" fill="none" stroke-linecap="round"/>
+
+  <!-- 鍋本体 -->
+  <rect x="12" y="28" width="40" height="26" rx="6" ry="6" fill="#92400E"/>
+
+  <!-- カレー（黄金色の液体） -->
+  <rect x="12" y="32" width="40" height="22" rx="4" ry="4" fill="#D97706"/>
+
+  <!-- 蓋 -->
+  <rect x="10" y="24" width="44" height="8" rx="4" ry="4" fill="#78350F"/>
+  <!-- 蓋のつまみ -->
+  <rect x="28" y="19" width="8" height="7" rx="3" ry="3" fill="#78350F"/>
+
+  <!-- 取っ手（左） -->
+  <rect x="4" y="28" width="10" height="6" rx="3" ry="3" fill="#78350F"/>
+  <!-- 取っ手（右） -->
+  <rect x="50" y="28" width="10" height="6" rx="3" ry="3" fill="#78350F"/>
+
+  <!-- カレーの具（にんじん風） -->
+  <circle cx="22" cy="42" r="4" fill="#EF4444" opacity="0.85"/>
+  <!-- カレーの具（じゃがいも風） -->
+  <circle cx="32" cy="44" r="4.5" fill="#FCD34D" opacity="0.85"/>
+  <!-- カレーの具（肉風） -->
+  <circle cx="42" cy="41" r="4" fill="#7C3AED" opacity="0.75"/>
+</svg>
