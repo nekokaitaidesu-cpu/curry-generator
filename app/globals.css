@@ -786,6 +786,268 @@ body {
 }
 
 /* ============================================================
+   モード切替スイッチャー
+   ============================================================ */
+.mode-switcher {
+  display: flex;
+  background: var(--bg-tab);
+  border-radius: 50px;
+  padding: 4px;
+  border: 1px solid var(--border-color);
+  gap: 2px;
+  box-shadow: var(--shadow-sm);
+}
+
+.mode-button {
+  flex: 1;
+  padding: 10px 16px;
+  border-radius: 46px;
+  border: none;
+  font-family: inherit;
+  font-size: 14px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  color: var(--text-muted);
+  background: transparent;
+  white-space: nowrap;
+}
+
+.mode-button.active {
+  background: var(--bg-card);
+  color: var(--accent-orange);
+  box-shadow: var(--shadow-sm);
+}
+
+/* ============================================================
+   オールランダムボタン
+   ============================================================ */
+.random-buttons-wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+}
+
+.all-random-button {
+  background: linear-gradient(135deg, #9B59B6, #6C3483);
+  color: white;
+  border: none;
+  border-radius: 50px;
+  padding: 13px 36px;
+  font-size: 16px;
+  font-weight: 800;
+  font-family: inherit;
+  cursor: pointer;
+  box-shadow: 0 6px 24px rgba(155, 89, 182, 0.4);
+  transition: all 0.2s ease;
+  letter-spacing: 0.5px;
+  position: relative;
+  overflow: hidden;
+}
+
+.all-random-button::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(135deg, rgba(255,255,255,0.15), transparent);
+  border-radius: 50px;
+}
+
+.all-random-button:hover:not(:disabled) {
+  box-shadow: 0 8px 32px rgba(155, 89, 182, 0.6);
+  transform: translateY(-1px);
+}
+
+.all-random-button:disabled {
+  opacity: 0.8;
+  cursor: not-allowed;
+}
+
+/* ============================================================
+   マイカレーフォーム
+   ============================================================ */
+.mycurry-form {
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.mycurry-base-section,
+.mycurry-ingredients-section,
+.mycurry-amounts-section {
+  background: var(--bg-secondary);
+  border-radius: var(--radius-md);
+  padding: 16px;
+  border: 1px solid var(--border-color);
+}
+
+.mycurry-base-row {
+  display: flex;
+  align-items: flex-end;
+  gap: 12px;
+  margin-top: 12px;
+}
+
+.mycurry-input-group {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.mycurry-input-group label {
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--text-secondary);
+}
+
+.mycurry-divider {
+  font-size: 24px;
+  color: var(--text-muted);
+  font-weight: 300;
+  padding-bottom: 10px;
+}
+
+.mycurry-input-wrapper {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.mycurry-number-input {
+  width: 100%;
+  padding: 10px 8px;
+  border: 2px solid var(--border-color);
+  border-radius: var(--radius-sm);
+  font-size: 22px;
+  font-weight: 700;
+  font-family: inherit;
+  background: var(--bg-primary);
+  color: var(--text-primary);
+  text-align: center;
+  transition: border-color 0.15s ease;
+  -moz-appearance: textfield;
+}
+
+.mycurry-number-input::-webkit-inner-spin-button,
+.mycurry-number-input::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+.mycurry-number-input:focus {
+  outline: none;
+  border-color: var(--accent-orange);
+  box-shadow: 0 0 0 3px rgba(255, 140, 0, 0.15);
+}
+
+.mycurry-number-input-sm {
+  width: 80px;
+  font-size: 17px;
+  padding: 7px 8px;
+}
+
+.mycurry-unit {
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--text-secondary);
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+.mycurry-desc {
+  font-size: 13px;
+  color: var(--text-muted);
+  line-height: 1.5;
+}
+
+.mycurry-ingredients-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 4px;
+}
+
+.mycurry-selected-badge {
+  background: var(--accent-orange);
+  color: white;
+  border-radius: 10px;
+  padding: 2px 8px;
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.mycurry-category {
+  margin-bottom: 20px;
+}
+
+.mycurry-category:last-child {
+  margin-bottom: 0;
+}
+
+.mycurry-amounts-list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-top: 12px;
+}
+
+.mycurry-amount-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 8px 12px;
+  background: var(--bg-tab);
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--border-color);
+}
+
+.mycurry-amount-label {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--text-primary);
+  flex: 1;
+  min-width: 0;
+}
+
+.mycurry-amount-label span:last-child {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.mycurry-actions {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.mycurry-clear-button {
+  background: transparent;
+  color: var(--text-muted);
+  border: 1.5px solid var(--border-color);
+  border-radius: 50px;
+  padding: 12px 20px;
+  font-size: 14px;
+  font-weight: 700;
+  font-family: inherit;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.mycurry-clear-button:hover {
+  background: var(--border-color);
+  color: var(--text-primary);
+}
+
+/* ============================================================
    スクロールバー
    ============================================================ */
 ::-webkit-scrollbar {

@@ -179,18 +179,13 @@ export function generateCurry(enabledIngredientIds: Set<string>): CurryResult {
 }
 
 /**
- * 栄養情報を計算する
+ * 栄養情報を計算する（実グラム数指定版）
  */
-function calculateNutrition(
-  ricePercent: number,
-  curryPercent: number,
+function calculateNutritionFromGrams(
+  riceGrams: number,
+  rouGrams: number,
   ingredients: IngredientResult[]
 ): NutritionInfo {
-  // ご飯の基本量（300gを基準にricePercentでスケール）
-  const riceGrams = (ricePercent / 100) * 300;
-  // カレールーの基本量（300gを基準にcurryPercentでスケール、ご飯と合わせて300g固定）
-  const rouGrams = 300 - riceGrams;
-
   // ご飯の栄養（per 100g: 168kcal, 2.5g protein, 0.3g fat, 37g carbs, 1mg sodium, 0.3g fiber）
   const riceNutrition: NutritionInfo = {
     kcal: (riceGrams / 100) * 168,
@@ -214,7 +209,6 @@ function calculateNutrition(
   // 食材の栄養合計
   const ingredientNutrition = ingredients.reduce(
     (acc, { ingredient, amount }) => {
-      // 重量に換算
       const grams = amount * UNIT_WEIGHT[ingredient.unit];
       const factor = grams / 100;
       return {
@@ -239,9 +233,79 @@ function calculateNutrition(
   };
 }
 
+/**
+ * 栄養情報を計算する（比率ベース・ランダム生成用）
+ */
+function calculateNutrition(
+  ricePercent: number,
+  _curryPercent: number,
+  ingredients: IngredientResult[]
+): NutritionInfo {
+  const riceGrams = (ricePercent / 100) * 300;
+  const rouGrams = 300 - riceGrams;
+  return calculateNutritionFromGrams(riceGrams, rouGrams, ingredients);
+}
+
 /** デフォルトで有効な食材のIDセット */
 export function getDefaultEnabledIngredients(): Set<string> {
   return new Set(
     INGREDIENTS.filter((i) => i.defaultEnabled).map((i) => i.id)
   );
+}
+
+/**
+ * オールランダム生成
+ * 全48食材からランダムに2〜15個を選択し、比率も完全ランダムで生成する
+ */
+export function generateAllRandom(): CurryResult {
+  const shuffled = [...INGREDIENTS].sort(() => Math.random() - 0.5);
+  const count = randomInt(2, Math.min(15, INGREDIENTS.length));
+  const selectedIds = new Set(shuffled.slice(0, count).map((i) => i.id));
+  return generateCurry(selectedIds);
+}
+
+/**
+ * マイカレー生成
+ * ユーザーが指定した量でカレーを作る
+ */
+export function createMyCurry(
+  riceGrams: number,
+  rouGrams: number,
+  ingredientAmounts: { id: string; amount: number }[]
+): CurryResult {
+  const total = riceGrams + rouGrams;
+  const ricePercent = total > 0 ? Math.round((riceGrams / total) * 100) : 50;
+  const curryPercent = 100 - ricePercent;
+
+  const commentIndex = Math.min(Math.round(ricePercent / 10), 10);
+  const commentGroup = REACTION_COMMENTS[commentIndex];
+  const comment = commentGroup[randomInt(0, commentGroup.length - 1)];
+
+  const ingredientResults: IngredientResult[] = [];
+  for (const { id, amount } of ingredientAmounts) {
+    const ingredient = INGREDIENTS.find((i) => i.id === id);
+    if (ingredient && amount > 0) {
+      ingredientResults.push({ ingredient, amount });
+    }
+  }
+
+  const ingredientTotalGrams = ingredientResults.reduce(
+    (sum, { ingredient, amount }) => sum + amount * UNIT_WEIGHT[ingredient.unit],
+    0
+  );
+  const totalGrams = riceGrams + rouGrams + ingredientTotalGrams;
+
+  const nutrition = calculateNutritionFromGrams(riceGrams, rouGrams, ingredientResults);
+
+  return {
+    ricePercent,
+    curryPercent,
+    riceGrams,
+    rouGrams,
+    ingredientTotalGrams,
+    totalGrams,
+    ingredients: ingredientResults,
+    comment,
+    nutrition,
+  };
 }
